@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder Branding & Content Systems | Premium Strategy</title>
+    <meta name="description" content="Helping founders and entrepreneurs build personal brands that attract deals, talent, and opportunities through scalable content systems.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-copy">
+            <div class="loader-wrapper" aria-hidden="true">
+                <span class="loader-letter">L</span>
+                <span class="loader-letter">O</span>
+                <span class="loader-letter">A</span>
+                <span class="loader-letter">D</span>
+                <span class="loader-letter">I</span>
+                <span class="loader-letter">N</span>
+                <span class="loader-letter">G</span>
+                <span class="loader-letter">.</span>
+                <span class="loader-letter">.</span>
+                <span class="loader-letter">.</span>
+                <div class="loader"></div>
+            </div>
+            <div class="loader-kicker">Preparing experience</div>
+            <div class="loader-text">Calibrating frames, motion, and interface depth.</div>
+            <div class="progress-meta">
+                <span>Status</span>
+                <span id="loader-percent">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Canvas Hero Sequence Container Frame -->
+        <section id="hero" class="hero-scroll-container">
+            <div class="sticky-hero">
+                <!-- Inner Header floating on top of canvas -->
+                <header class="header reveal-down" style="position: absolute; top: 0; left: 0; width: 100%; z-index: 100; padding: 2rem 3rem;">
+                    <div class="container header-container" style="display: flex; justify-content: space-between; align-items: center;">
+                        <a href="#" class="logo text-black" style="font-weight: 900; letter-spacing: -0.05em;">ADHITH</a>
+                        <nav class="nav" style="display: flex; gap: 2rem; align-items: center;">
+                            <a href="#work" class="text-black roll-hover" data-text="Work" style="font-weight: 500;"><span>Work</span></a>
+                            <a href="#services" class="text-black roll-hover" data-text="Services" style="font-weight: 500;"><span>Services</span></a>
+                            <a href="#about" class="text-black roll-hover" data-text="About" style="font-weight: 500;"><span>About</span></a>
+                        </nav>
+                        <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" class="btn text-white" style="background:#000; border-radius:50px; padding: 10px 24px;" target="_blank" rel="noopener noreferrer">Work With Me</a>
+                    </div>
+                </header>
+
+                <canvas id="interactive-particles" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
+                <canvas id="hero-canvas"></canvas>
+
+                <!-- Vertical Scroller Indicator -->
+                <div class="vertical-scroller" style="pointer-events: none;">
+                    <span class="scroller-num">01</span>
+                    <div class="scroller-track">
+                        <div id="scroll-marker" class="scroller-progress"></div>
+                    </div>
+                    <span class="scroller-num">02</span>
+                </div>
+                
+                <!-- Overlay Text Elements -->
+                <div class="hero-text-overlay container" style="position: absolute; inset: 0; pointer-events: none; padding: 3rem;">
+                    <!-- Frame 1: Headline - Top Left Corner -->
+                    <div id="hero-text-1" class="hero-layer" style="position: absolute; left: 2.5vw; top: 25vh; text-align: left; opacity: 1; visibility: visible; align-items: flex-start;">
+                        <h1 class="hero-title text-black" style="font-family: inherit; font-size: clamp(2.5rem, 4vw, 5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; margin: 0; text-transform: uppercase;">BRAND<br>STRATEGIST</h1>
+                        <p style="color: #666; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.25rem;">I Turn Founders Into Icons.</p>
+                        
+                        <!-- Socials -->
+                        <div class="hero-socials" style="display: flex; gap: 1.25rem; margin-top: 1.5rem;">
+                            <a href="https://www.instagram.com/adhithhp_/" class="icon-pulse-hover" style="color: #111;" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram profile">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </a>
+                            <a href="https://www.linkedin.com/in/adhith-pmarketing" class="icon-pulse-hover" style="color: #111;" target="_blank" rel="noopener noreferrer" aria-label="Open LinkedIn profile">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                            </a>
+                            <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" class="icon-pulse-hover" style="color: #111;" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Frame 2: Subtitle - Bottom Right Corner Glass Pane -->
+                    <div id="hero-text-2" class="hero-layer glass-pane" style="position: absolute; right: 4vw; bottom: 8vh; text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
+                        <h3 style="font-size: 1.15rem; font-weight: 700; color: #111; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-transform: uppercase;">Positioning & Authority</h3>
+                        <p class="hero-subtitle text-black" style="font-size: 1.1rem; color: #555; max-width: 350px; line-height: 1.6; margin: 0;">Founder-first brand systems built to sharpen your positioning, grow attention, and turn content into real demand.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Bento Layout Social Proof -->
+        <section class="bento-section py-medium">
+            <div class="container">
+                <div class="bento-grid">
+                    
+                    <!-- Box 1: Services (Pills) -->
+                    <div class="bento-card bento-services reveal-up">
+                        <h3 class="bento-title text-black">Services</h3>
+                        <div class="bento-pills-container">
+                            <span class="pill pill-black"><i class="star-icon">✦</i> Brand Strategy</span>
+                            <span class="pill pill-outline">Monetization</span>
+                            <span class="pill pill-black">Systems</span>
+                            <span class="pill pill-outline">Paid Ads</span>
+                            <span class="pill pill-outline">Positioning</span>
+                            <span class="pill pill-black">Content Creation</span>
+                        </div>
+                    </div>
+
+                    <!-- Box 2: Stats Stack -->
+                    <div class="bento-stack">
+                        <div class="bento-card bg-black reveal-up bento-stat" style="transition-delay: 0.1s;">
+                            <div class="stat-large">2.5B+</div>
+                            <p class="stat-caption">views generated across our content systems.</p>
+                        </div>
+                        <div class="bento-card bg-white reveal-up bento-stat" style="transition-delay: 0.15s;">
+                            <div class="stat-large text-black">50+</div>
+                            <p class="stat-caption text-gray">start-up brands successfully transformed by us.</p>
+                        </div>
+                    </div>
+
+                    <!-- Box 3: Testimonial -->
+                    <div class="bento-card bento-testimonial reveal-up" style="transition-delay: 0.2s;">
+                        <div class="quote-icon">“</div>
+                        <h3 class="testimony-text text-black">The final product exceeded my expectations.</h3>
+                        <p class="testimony-subtext text-gray">Impressed with the results!</p>
+                        <div class="testimony-avatars">
+                            <img src="https://i.pravatar.cc/100?img=11" alt="Avatar" class="avatar">
+                            <img src="https://i.pravatar.cc/100?img=32" alt="Avatar" class="avatar avatar-overlap">
+                            <span class="avatar-name">AS.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Selected Work (Futuristic Sticky Scroll) -->
+        <section id="work" class="work-scroll-container">
+            <canvas id="work-particles" aria-hidden="true"></canvas>
+            <div class="work-sticky-container">
+                <div class="container" style="display: flex; flex-direction: column; height: 100%; justify-content: center; padding-top: 5vh; padding-bottom: 5vh;">
+                    
+                    <div class="work-header reveal-up">
+                        <div class="sub-label text-gray" style="margin-bottom: 1rem;">Selected Work</div>
+                        <div class="header-split" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+                            <h2 class="text-white" style="font-size: clamp(2rem, 3.5vw, 3.5rem); letter-spacing: -0.03em; line-height: 1.1;">Results that<br>speak for themselves.</h2>
+                            <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" class="btn work-header-btn" target="_blank" rel="noopener noreferrer">Get started</a>
+                        </div>
+                    </div>
+
+                    <div class="workflow-glass-panel reveal-up" style="transition-delay: 0.1s;">
+                        <!-- Left Side: Names -->
+                        <div class="workflow-names">
+                            <h3 class="name-item active" data-index="0">Sam Zia.</h3>
+                            <h3 class="name-item" data-index="1">Rashid RJ.</h3>
+                            <h3 class="name-item" data-index="2">Vibecode.</h3>
+                        </div>
+
+                        <!-- Right Side: Details / Timeline -->
+                        <div class="workflow-details-wrapper">
+                            
+                            <!-- Case Study 1 -->
+                            <div class="workflow-case active" data-index="0">
+                                <div class="case-timeline">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot brightness-pulse"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">197K → 700K Instagram followers</div>
+                                            <div class="node-sub">metric · 5x growth</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">Full-spectrum growth strategy</div>
+                                            <div class="node-sub">execution · ongoing</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Case Study 2 -->
+                            <div class="workflow-case" data-index="1">
+                                <div class="case-timeline">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot brightness-pulse"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">0 → 40K followers on Instagram</div>
+                                            <div class="node-sub">metric · audience growth</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">5M+ views generated</div>
+                                            <div class="node-sub">performance · content engine</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Case Study 3 -->
+                            <div class="workflow-case" data-index="2">
+                                <div class="case-timeline">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot brightness-pulse"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">10M views at launch</div>
+                                            <div class="node-sub">impact · day one</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-node">
+                                        <div class="node-dot"></div>
+                                        <div class="node-content">
+                                            <div class="node-title">Built viral content loops</div>
+                                            <div class="node-sub">strategy · execution</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="workflow-progress" aria-hidden="true">
+                            <span class="workflow-progress-dot active" data-index="0"></span>
+                            <span class="workflow-progress-dot" data-index="1"></span>
+                            <span class="workflow-progress-dot" data-index="2"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Client Logos / Name Drops -->
+        <section class="clients py-medium border-btm">
+            <div class="container">
+                <div class="clients-heading reveal-up">
+                    <p class="sub-label">Also worked with</p>
+                </div>
+                <div class="client-scene reveal-up" style="transition-delay: 0.1s;">
+                    <div class="client-orbit orbit-one"></div>
+                    <div class="client-orbit orbit-two"></div>
+                    <div class="client-orbit orbit-three"></div>
+
+                    <div class="client-spot client-spot-1">
+                        <a class="client-avatar-link" href="https://www.instagram.com/buildyourecombrand/" target="_blank" rel="noopener noreferrer" aria-label="Open Kinston La on Instagram">
+                            <img class="client-avatar" src="https://unavatar.io/instagram/buildyourecombrand" alt="Kinston La profile picture">
+                        </a>
+                    </div>
+
+                    <div class="client-spot client-spot-2">
+                        <a class="client-avatar-link" href="https://www.instagram.com/thetradinggeek/" target="_blank" rel="noopener noreferrer" aria-label="Open TheTradingGeek on Instagram">
+                            <img class="client-avatar" src="https://unavatar.io/instagram/thetradinggeek" alt="TheTradingGeek profile picture">
+                        </a>
+                    </div>
+
+                    <div class="client-spot client-spot-3">
+                        <a class="client-avatar-link" href="https://www.instagram.com/rashidrj_architects/" target="_blank" rel="noopener noreferrer" aria-label="Open Rashid RJ on Instagram">
+                            <img class="client-avatar" src="https://unavatar.io/instagram/rashidrj_architects" alt="Rashid RJ profile picture">
+                        </a>
+                    </div>
+
+                    <div class="client-spot client-spot-4">
+                        <a class="client-avatar-link" href="https://www.instagram.com/faris__root/" target="_blank" rel="noopener noreferrer" aria-label="Open Faris Root on Instagram">
+                            <img class="client-avatar" src="https://unavatar.io/instagram/faris__root" alt="Faris Root profile picture">
+                        </a>
+                    </div>
+
+                    <div class="client-message">
+                        <p>Worked behind the scenes with creators, founders, and operators building serious attention online.</p>
+                        <p>From audience growth to brand systems, each collaboration was shaped around leverage, clarity, and long-term momentum.</p>
+                        <p>These are just a few of the people whose brands I’ve helped move forward.</p>
+                    </div>
+
+                    <div class="client-actions">
+                        <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" class="client-cta" target="_blank" rel="noopener noreferrer">Build your brand with me</a>
+                    </div>
+
+                    <div class="client-list">
+                        <a class="client-drop" href="https://www.instagram.com/buildyourecombrand/" target="_blank" rel="noopener noreferrer">
+                            <span>Kinston La</span>
+                        </a>
+                        <a class="client-drop" href="https://www.instagram.com/thetradinggeek/" target="_blank" rel="noopener noreferrer">
+                            <span>TheTradingGeek</span>
+                        </a>
+                        <a class="client-drop" href="https://www.instagram.com/rashidrj_architects/" target="_blank" rel="noopener noreferrer">
+                            <span>Rashid RJ</span>
+                        </a>
+                        <a class="client-drop" href="https://www.instagram.com/faris__root/" target="_blank" rel="noopener noreferrer">
+                            <span>Faris Root</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Services Section -->
+        <section id="services" class="services py-large">
+            <div class="container">
+                <div class="services-heading reveal-up">
+                    <h2>What I build for you.</h2>
+                    <p>Three high-leverage offers designed to sharpen your positioning, content, and growth infrastructure.</p>
+                </div>
+
+                <div class="services-deck reveal-up" style="transition-delay: 0.1s;">
+                    <div class="services-bg-grid" aria-hidden="true"></div>
+                    <div class="services-bg-wave services-bg-wave-one" aria-hidden="true"></div>
+                    <div class="services-bg-wave services-bg-wave-two" aria-hidden="true"></div>
+                    <div class="services-bg-orb services-bg-orb-one" aria-hidden="true"></div>
+                    <div class="services-bg-orb services-bg-orb-two" aria-hidden="true"></div>
+                    <div class="services-bg-particles" aria-hidden="true"></div>
+
+                    <button class="service-card active" type="button" data-service-card="0">
+                        <span class="service-card-rail">Founder Personal Branding</span>
+                        <div class="service-card-body">
+                            <h3 class="service-card-title">Founder Personal Branding</h3>
+                            <p class="service-card-copy">End-to-end personal brand systems for 6–8 figure founders — positioning, content, audience growth, and automated brand infrastructure.</p>
+                            <ul class="service-card-list">
+                                <li>Positioning strategy</li>
+                                <li>Content systems</li>
+                                <li>Visual identity</li>
+                                <li>Story-driven sales</li>
+                                <li>Growth loops</li>
+                            </ul>
+                        </div>
+                        <span class="service-card-icon">01</span>
+                    </button>
+
+                    <button class="service-card" type="button" data-service-card="1">
+                        <span class="service-card-rail">Consulting & Advisory</span>
+                        <div class="service-card-body">
+                            <h3 class="service-card-title">Consulting & Advisory</h3>
+                            <p class="service-card-copy">High-level strategic guidance tailored to your brand. No templates, only custom thinking.</p>
+                            <ul class="service-card-list">
+                                <li>Brand audits and positioning clarity</li>
+                                <li>Content direction for founders and teams</li>
+                                <li>Strategic offers and messaging refinement</li>
+                                <li>Custom growth recommendations</li>
+                                <li>Direct, high-leverage feedback</li>
+                            </ul>
+                        </div>
+                        <span class="service-card-icon">02</span>
+                    </button>
+
+                    <button class="service-card" type="button" data-service-card="2">
+                        <span class="service-card-rail">Content Strategy & Systems</span>
+                        <div class="service-card-body">
+                            <h3 class="service-card-title">Content Strategy & Systems</h3>
+                            <p class="service-card-copy">Strategic content engines built to turn your ideas into consistent authority, trust, and inbound demand across every key platform.</p>
+                            <ul class="service-card-list">
+                                <li>Platform-specific content architecture</li>
+                                <li>Repeatable ideation and scripting systems</li>
+                                <li>Editorial workflows your team can sustain</li>
+                                <li>Audience trust and conversion pathways</li>
+                                <li>Compoundable inbound demand</li>
+                            </ul>
+                        </div>
+                        <span class="service-card-icon">03</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. About Section -->
+        <section id="about" class="about py-large">
+            <div class="container">
+                <div class="about-shell reveal-up">
+                    <div class="about-grid" aria-hidden="true"></div>
+                    <div class="about-orbit about-orbit-one" aria-hidden="true"></div>
+                    <div class="about-orbit about-orbit-two" aria-hidden="true"></div>
+                    <div class="about-glow about-glow-one" aria-hidden="true"></div>
+                    <div class="about-glow about-glow-two" aria-hidden="true"></div>
+
+                    <div class="about-hero">
+                        <article class="about-portrait-card about-tilt-card">
+                            <img src="assets/about-portrait.png" alt="Portrait of Adhith" class="about-portrait">
+                        </article>
+
+                        <div class="about-header">
+                            <p class="about-kicker">About</p>
+                            <h2>Started with cold pitching. Built into systems that scale.</h2>
+                            <p class="about-lead">I help founders turn attention into authority through sharper positioning, better content systems, and a brand presence that feels deliberate instead of improvised.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-layout">
+                        <article class="about-story-card about-tilt-card">
+                            <span class="about-card-label">Origin Story</span>
+                            <p>Started by going door to door pitching my service, learning how to sell attention before I had a name, brand, or proof behind me. That hustle turned into real client work, then into content systems that kept scaling.</p>
+                            <p>What began as chasing opportunities evolved into building authority architectures. Now the work is about helping founders look sharper, sound clearer, and grow through systems instead of random output.</p>
+                            <div class="about-signal-row">
+                                <span class="about-signal">Door-to-door start</span>
+                                <span class="about-signal">2.5B+ views</span>
+                                <span class="about-signal">Founder-led brands</span>
+                            </div>
+                        </article>
+
+                        <div class="about-side-stack">
+                            <article class="about-info-card about-tilt-card">
+                                <span class="about-card-label">What I Actually Build</span>
+                                <ul class="about-points">
+                                    <li>Positioning that makes your brand instantly legible</li>
+                                    <li>Content systems your team can repeat without dilution</li>
+                                    <li>Authority pathways that connect attention to business growth</li>
+                                </ul>
+                            </article>
+
+                            <article class="about-info-card about-tilt-card">
+                                <span class="about-card-label">Operating Principle</span>
+                                <p class="about-note">The goal is never just more content. The goal is leverage: fewer random moves, stronger narratives, better conversion, and a brand that compounds over time.</p>
+                                <div class="about-metric-strip">
+                                    <div class="about-metric">
+                                        <strong>Strategy</strong>
+                                        <span>before scale</span>
+                                    </div>
+                                    <div class="about-metric">
+                                        <strong>Systems</strong>
+                                        <span>before noise</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Final CTA Section -->
+        <section id="contact" class="cta py-xl">
+            <div class="container reveal-up">
+                <div class="cta-shell">
+                    <div class="cta-heading">
+                        <h2 class="cta-title">Let’s Work <span>Together</span></h2>
+                    </div>
+
+                    <div class="cta-visuals">
+                        <div class="cta-portrait-card">
+                            <img src="assets/cta-portrait.png" alt="Portrait of Adhith" class="cta-portrait">
+                        </div>
+
+                        <div class="cta-swap-icon" aria-hidden="true">↔</div>
+
+                        <div class="cta-ghost-card">
+                            <div class="cta-ghost-avatar">
+                                <div class="cta-ghost-head"></div>
+                                <div class="cta-ghost-body"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="cta-subtitle">I’ll help you build the brand and website you’ve actually been imagining. If the vision is clear, we can make it real.</p>
+
+                    <div class="cta-actions">
+                        <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" class="cta-button" target="_blank" rel="noopener noreferrer">Book a Strategy Call</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container reveal-up">
+            <div class="footer-shell">
+                <div class="footer-top">
+                    <div class="footer-brand">
+                        <p class="footer-label">Final Note</p>
+                        <div class="logo">STRATEGIST.</div>
+                        <p class="footer-note">Built for founders who want their brand, presence, and website to feel as sharp as the business behind them.</p>
+                    </div>
+
+                    <div class="footer-nav-group">
+                        <p class="footer-label">Navigate</p>
+                        <div class="footer-links">
+                            <a href="#work">Work</a>
+                            <a href="#services">Services</a>
+                            <a href="#about">About</a>
+                            <a href="#contact">Contact</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-nav-group">
+                        <p class="footer-label">Connect</p>
+                        <div class="footer-links">
+                            <a href="https://wa.me/919037275277?text=can%20i%20know%20more%20about%20your%20service%3F" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                            <a href="https://www.instagram.com/adhithhp_/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                            <a href="https://www.linkedin.com/in/adhith-pmarketing" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p class="footer-signoff">Built with intent for founders who want a brand that compounds.</p>
+                    <div class="footer-meta">
+                        <a href="#hero" class="footer-backtotop">Back to top</a>
+                        <div class="copyright">&copy; <span id="year"></span> STRATEGIST. All rights reserved.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
