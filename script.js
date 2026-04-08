@@ -1,43 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Initialize Lenis for Smooth Scrolling
-    const lenis = new Lenis({
-        duration: 1.9,
-        easing: (t) => 1 - Math.pow(1 - t, 5),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        smoothWheel: true,
-        wheelMultiplier: 0.72,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchMultiplier: 1.08,
-        infinite: false,
-    });
-
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    const smoothAnchorLinks = document.querySelectorAll('a[href^="#"]');
-    smoothAnchorLinks.forEach((link) => {
-        link.addEventListener('click', (event) => {
-            const targetId = link.getAttribute('href');
-            if (!targetId || targetId === '#') return;
-
-            const targetEl = document.querySelector(targetId);
-            if (!targetEl) return;
-
-            event.preventDefault();
-            lenis.scrollTo(targetEl, {
-                duration: 1.6,
-                easing: (t) => 1 - Math.pow(1 - t, 4),
-                offset: 0,
-            });
-        });
-    });
-
     // 2. Dynamic footer year
     const yearEl = document.getElementById('year');
     if(yearEl) yearEl.textContent = new Date().getFullYear();
@@ -107,9 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("hero-canvas");
     if (canvas) {
         const context = canvas.getContext("2d");
+        const isMobile = window.matchMedia('(max-width: 700px)').matches;
         const frameCount = 240;
         const images = [];
         let imagesLoaded = 0;
+        let lastRenderedFrame = -1;
+        let heroScrollRaf = null;
 
         const currentFrame = index => `Hero-Section/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.png`;
 
@@ -173,13 +137,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function updateImage(index) {
             if (!images[index]) return;
+            if (index === lastRenderedFrame) return;
+            lastRenderedFrame = index;
             // Clear and draw image filling the canvas resolution
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(images[index], 0, 0);
         }
 
-        // Scroll Logic tied to Lenis
-        lenis.on('scroll', () => {
+        const updateHeroScrollState = () => {
+            heroScrollRaf = null;
             const container = document.getElementById('hero');
             if (!container) return;
 
@@ -201,8 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 frameCount - 1,
                 Math.floor(scrollProgress * frameCount)
             );
-            
-            requestAnimationFrame(() => updateImage(frameIndex));
+            const sampledFrameIndex = isMobile
+                ? Math.round(frameIndex / 3) * 3
+                : frameIndex;
+
+            updateImage(sampledFrameIndex);
 
             // Text reveal mapping logic based on percentage (scrollProgress)
             const layer1 = document.getElementById('hero-text-1');
@@ -220,7 +189,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     layer2.classList.remove('active');
                 }
             }
-        });
+        };
+
+        const requestHeroScrollUpdate = () => {
+            if (heroScrollRaf !== null) return;
+            heroScrollRaf = window.requestAnimationFrame(updateHeroScrollState);
+        };
+
+        window.addEventListener('scroll', requestHeroScrollUpdate, { passive: true });
+        window.addEventListener('resize', requestHeroScrollUpdate, { passive: true });
+        updateHeroScrollState();
     }
 
     // ==========================================
@@ -309,6 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const pCtx = particleCanvas.getContext('2d');
         particleCanvas.width = window.innerWidth;
         particleCanvas.height = window.innerHeight;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 700px)').matches;
 
         let particlesArray = [];
         let mouse = {
@@ -317,15 +297,17 @@ document.addEventListener("DOMContentLoaded", () => {
             radius: 120 // Connection/repulsion radius
         }
 
-        window.addEventListener('mousemove', function(event) {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
+        if (!isMobile) {
+            window.addEventListener('mousemove', function(event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
 
-        window.addEventListener('mouseout', function() {
-            mouse.x = undefined;
-            mouse.y = undefined;
-        });
+            window.addEventListener('mouseout', function() {
+                mouse.x = undefined;
+                mouse.y = undefined;
+            });
+        }
 
         window.addEventListener('resize', function() {
             particleCanvas.width = window.innerWidth;
@@ -412,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function initParticles() {
             particlesArray = [];
-            let numberOfParticles = window.innerWidth < 700 ? 16 : 35; // Keep mobile cleaner
+            let numberOfParticles = window.innerWidth < 700 ? 8 : 24;
             
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 1.5) + 0.5; // Back to tiny (0.5 to 2.0)
@@ -436,7 +418,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initParticles();
-        animateParticles();
+        if (!reduceMotion && !isMobile) {
+            animateParticles();
+        } else {
+            pCtx.clearRect(0, 0, innerWidth, innerHeight);
+            particlesArray.forEach((particle) => particle.draw());
+        }
     }
 
     // ==========================================
@@ -449,6 +436,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const starContext = workParticleCanvas.getContext('2d');
         let stars = [];
         let starAnimationId = null;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 700px)').matches;
 
         const setWorkCanvasSize = () => {
             const bounds = workSection.getBoundingClientRect();
@@ -465,8 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const width = workParticleCanvas.clientWidth;
             const height = workParticleCanvas.clientHeight;
             const starCount = window.innerWidth <= 700
-                ? Math.max(14, Math.floor((width * height) / 42000))
-                : Math.max(36, Math.floor((width * height) / 18000));
+                ? Math.max(8, Math.floor((width * height) / 62000))
+                : Math.max(24, Math.floor((width * height) / 24000));
 
             stars = Array.from({ length: starCount }, () => ({
                 x: Math.random() * width,
@@ -535,7 +524,15 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         refreshStars();
-        drawStars();
+        if (!reduceMotion && !isMobile) {
+            drawStars();
+        } else {
+            drawStars();
+            if (starAnimationId) {
+                cancelAnimationFrame(starAnimationId);
+                starAnimationId = null;
+            }
+        }
 
         window.addEventListener('resize', refreshStars);
         workSection.addEventListener('mouseleave', () => {
