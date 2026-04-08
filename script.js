@@ -216,11 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 Math.floor(scrollProgress * frameCount)
             );
 
-            const sampledFrameIndex = isMobile
-                ? Math.round(frameIndex / 3) * 3
-                : frameIndex;
-
-            updateImage(sampledFrameIndex);
+            updateImage(frameIndex);
 
             // Text reveal mapping logic based on percentage (scrollProgress)
             const layer1 = document.getElementById('hero-text-1');
@@ -348,17 +344,15 @@ document.addEventListener("DOMContentLoaded", () => {
             radius: 120 // Connection/repulsion radius
         }
 
-        if (!isMobile) {
-            window.addEventListener('mousemove', function(event) {
-                mouse.x = event.x;
-                mouse.y = event.y;
-            });
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
 
-            window.addEventListener('mouseout', function() {
-                mouse.x = undefined;
-                mouse.y = undefined;
-            });
-        }
+        window.addEventListener('mouseout', function() {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
 
         window.addEventListener('resize', function() {
             particleCanvas.width = window.innerWidth;
@@ -445,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function initParticles() {
             particlesArray = [];
-            let numberOfParticles = window.innerWidth < 700 ? 8 : 35;
+            let numberOfParticles = window.innerWidth < 700 ? 16 : 35;
             
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 1.5) + 0.5; // Back to tiny (0.5 to 2.0)
@@ -469,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initParticles();
-        if (!isMobile && !prefersReducedMotion) {
+        if (!prefersReducedMotion) {
             animateParticles();
         } else {
             pCtx.clearRect(0, 0, innerWidth, innerHeight);
@@ -503,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const width = workParticleCanvas.clientWidth;
             const height = workParticleCanvas.clientHeight;
             const starCount = window.innerWidth <= 700
-                ? Math.max(8, Math.floor((width * height) / 68000))
+                ? Math.max(14, Math.floor((width * height) / 42000))
                 : Math.max(36, Math.floor((width * height) / 18000));
 
             stars = Array.from({ length: starCount }, () => ({
@@ -573,7 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         refreshStars();
-        if (!isMobile && !prefersReducedMotion) {
+        if (!prefersReducedMotion) {
             drawStars();
         } else {
             drawStars();
