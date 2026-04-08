@@ -436,7 +436,6 @@ img {
     mix-blend-mode: multiply; /* This magically erases the white video borders! */
     filter: contrast(1.1); 
     z-index: 1;
-    pointer-events: none;
 }
 
 /* Hero Text Overlays */

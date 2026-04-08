@@ -1,29 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const isMobile = window.matchMedia('(max-width: 700px)').matches;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const useLenis = typeof Lenis !== 'undefined' && !isMobile && !prefersReducedMotion;
-    let lenis = null;
+    // 1. Initialize Lenis for Smooth Scrolling
+    const lenis = new Lenis({
+        duration: 1.9,
+        easing: (t) => 1 - Math.pow(1 - t, 5),
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        smoothWheel: true,
+        wheelMultiplier: 0.72,
+        syncTouch: true,
+        syncTouchLerp: 0.075,
+        touchMultiplier: 1.08,
+        infinite: false,
+    });
 
-    // 1. Initialize Lenis only for desktop so mobile keeps direct native scrolling
-    if (useLenis) {
-        lenis = new Lenis({
-            duration: 1.15,
-            easing: (t) => 1 - Math.pow(1 - t, 4),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            smoothWheel: true,
-            wheelMultiplier: 1,
-            syncTouch: false,
-            infinite: false,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+    function raf(time) {
+        lenis.raf(time);
         requestAnimationFrame(raf);
     }
+    requestAnimationFrame(raf);
 
     const smoothAnchorLinks = document.querySelectorAll('a[href^="#"]');
     smoothAnchorLinks.forEach((link) => {
@@ -35,16 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!targetEl) return;
 
             event.preventDefault();
-
-            if (lenis) {
-                lenis.scrollTo(targetEl, {
-                    duration: 1.05,
-                    easing: (t) => 1 - Math.pow(1 - t, 4),
-                    offset: 0,
-                });
-            } else {
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            lenis.scrollTo(targetEl, {
+                duration: 1.6,
+                easing: (t) => 1 - Math.pow(1 - t, 4),
+                offset: 0,
+            });
         });
     });
 
@@ -120,8 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const frameCount = 240;
         const images = [];
         let imagesLoaded = 0;
-        let lastRenderedFrame = -1;
-        let heroScrollRaf = null;
 
         const currentFrame = index => `Hero-Section/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.png`;
 
@@ -185,15 +173,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function updateImage(index) {
             if (!images[index]) return;
-            if (index === lastRenderedFrame) return;
-            lastRenderedFrame = index;
             // Clear and draw image filling the canvas resolution
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(images[index], 0, 0);
         }
 
-        const updateHeroScrollState = () => {
-            heroScrollRaf = null;
+        // Scroll Logic tied to Lenis
+        lenis.on('scroll', () => {
             const container = document.getElementById('hero');
             if (!container) return;
 
@@ -215,12 +201,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 frameCount - 1,
                 Math.floor(scrollProgress * frameCount)
             );
-
-            const sampledFrameIndex = isMobile
-                ? Math.round(frameIndex / 3) * 3
-                : frameIndex;
-
-            updateImage(sampledFrameIndex);
+            
+            requestAnimationFrame(() => updateImage(frameIndex));
 
             // Text reveal mapping logic based on percentage (scrollProgress)
             const layer1 = document.getElementById('hero-text-1');
@@ -238,20 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     layer2.classList.remove('active');
                 }
             }
-        };
-
-        const requestHeroScrollUpdate = () => {
-            if (heroScrollRaf !== null) return;
-            heroScrollRaf = window.requestAnimationFrame(updateHeroScrollState);
-        };
-
-        if (lenis) {
-            lenis.on('scroll', requestHeroScrollUpdate);
-        } else {
-            window.addEventListener('scroll', requestHeroScrollUpdate, { passive: true });
-        }
-        window.addEventListener('resize', requestHeroScrollUpdate, { passive: true });
-        updateHeroScrollState();
+        });
     }
 
     // ==========================================
@@ -348,17 +317,15 @@ document.addEventListener("DOMContentLoaded", () => {
             radius: 120 // Connection/repulsion radius
         }
 
-        if (!isMobile) {
-            window.addEventListener('mousemove', function(event) {
-                mouse.x = event.x;
-                mouse.y = event.y;
-            });
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
 
-            window.addEventListener('mouseout', function() {
-                mouse.x = undefined;
-                mouse.y = undefined;
-            });
-        }
+        window.addEventListener('mouseout', function() {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
 
         window.addEventListener('resize', function() {
             particleCanvas.width = window.innerWidth;
@@ -445,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function initParticles() {
             particlesArray = [];
-            let numberOfParticles = window.innerWidth < 700 ? 8 : 35;
+            let numberOfParticles = window.innerWidth < 700 ? 16 : 35; // Keep mobile cleaner
             
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 1.5) + 0.5; // Back to tiny (0.5 to 2.0)
@@ -469,12 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initParticles();
-        if (!isMobile && !prefersReducedMotion) {
-            animateParticles();
-        } else {
-            pCtx.clearRect(0, 0, innerWidth, innerHeight);
-            particlesArray.forEach((particle) => particle.draw());
-        }
+        animateParticles();
     }
 
     // ==========================================
@@ -503,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const width = workParticleCanvas.clientWidth;
             const height = workParticleCanvas.clientHeight;
             const starCount = window.innerWidth <= 700
-                ? Math.max(8, Math.floor((width * height) / 68000))
+                ? Math.max(14, Math.floor((width * height) / 42000))
                 : Math.max(36, Math.floor((width * height) / 18000));
 
             stars = Array.from({ length: starCount }, () => ({
@@ -573,15 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         refreshStars();
-        if (!isMobile && !prefersReducedMotion) {
-            drawStars();
-        } else {
-            drawStars();
-            if (starAnimationId) {
-                cancelAnimationFrame(starAnimationId);
-                starAnimationId = null;
-            }
-        }
+        drawStars();
 
         window.addEventListener('resize', refreshStars);
         workSection.addEventListener('mouseleave', () => {
