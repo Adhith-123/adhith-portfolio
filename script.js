@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Initialize Lenis for Smooth Scrolling
     const lenis = new Lenis({
-        duration: 1.9,
-        easing: (t) => 1 - Math.pow(1 - t, 5),
+        duration: 0.82,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
         direction: 'vertical',
         gestureDirection: 'vertical',
         smooth: true,
         smoothWheel: true,
-        wheelMultiplier: 0.72,
+        wheelMultiplier: 1.08,
         syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchMultiplier: 1.08,
+        syncTouchLerp: 0.16,
+        touchMultiplier: 1.12,
         infinite: false,
     });
 
@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             event.preventDefault();
             lenis.scrollTo(targetEl, {
-                duration: 1.6,
-                easing: (t) => 1 - Math.pow(1 - t, 4),
+                duration: 0.72,
+                easing: (t) => 1 - Math.pow(1 - t, 3),
                 offset: 0,
             });
         });
@@ -110,12 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const frameCount = 240;
         const images = [];
         let imagesLoaded = 0;
+        let lastRenderedFrame = -1;
+        let heroScrollTicking = false;
 
         const currentFrame = index => `Hero-Section/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.png`;
 
         const preloader = document.getElementById('preloader');
         const progressBar = document.getElementById('progress-bar');
         const loaderPercent = document.getElementById('loader-percent');
+        const stickyHero = document.querySelector('.sticky-hero');
+
+        const resizeHeroCanvas = () => {
+            const heroWidth = stickyHero ? stickyHero.clientWidth : window.innerWidth;
+            const heroHeight = stickyHero ? stickyHero.clientHeight : window.innerHeight;
+            const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+
+            canvas.width = Math.max(1, Math.floor(heroWidth * ratio));
+            canvas.height = Math.max(1, Math.floor(heroHeight * ratio));
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            context.imageSmoothingEnabled = true;
+        };
 
         // Preload frames
         const handleLoad = () => {
@@ -127,11 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if(loaderPercent) loaderPercent.textContent = `${progress}%`;
 
             if (imagesLoaded === frameCount) {
-                // Set canvas internal resolution to match the first image
-                if (images[0] && images[0].width) {
-                    canvas.width = images[0].width;
-                    canvas.height = images[0].height;
-                }
+                resizeHeroCanvas();
                 
                 updateImage(0); // Draw first frame so we can sample it
                 
@@ -142,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.documentElement.style.setProperty('--dynamic-bg', topColor);
                     document.body.style.backgroundColor = 'var(--dynamic-bg)';
                     
-                    const stickyHero = document.querySelector('.sticky-hero');
                     if (stickyHero) stickyHero.style.backgroundColor = 'var(--dynamic-bg)';
                 } catch (e) {
                     console.warn("Canvas Tainted by local file protocol. Defaulting to CSS background color.");
@@ -173,13 +182,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function updateImage(index) {
             if (!images[index]) return;
+            if (index === lastRenderedFrame) return;
+            if (!canvas.width || !canvas.height) return;
+            lastRenderedFrame = index;
+            const image = images[index];
+            const imageRatio = image.width / image.height;
+            const canvasRatio = canvas.width / canvas.height;
+
+            let drawWidth = canvas.width;
+            let drawHeight = canvas.height;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            if (imageRatio > canvasRatio) {
+                drawWidth = canvas.height * imageRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+            } else {
+                drawHeight = canvas.width / imageRatio;
+                offsetY = (canvas.height - drawHeight) / 2;
+            }
+
             // Clear and draw image filling the canvas resolution
             context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(images[index], 0, 0);
+            context.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
         }
 
-        // Scroll Logic tied to Lenis
-        lenis.on('scroll', () => {
+        const updateHeroScrollState = () => {
+            heroScrollTicking = false;
             const container = document.getElementById('hero');
             if (!container) return;
 
@@ -201,8 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 frameCount - 1,
                 Math.floor(scrollProgress * frameCount)
             );
-            
-            requestAnimationFrame(() => updateImage(frameIndex));
+
+            updateImage(frameIndex);
 
             // Text reveal mapping logic based on percentage (scrollProgress)
             const layer1 = document.getElementById('hero-text-1');
@@ -220,7 +249,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     layer2.classList.remove('active');
                 }
             }
-        });
+        };
+
+        const scheduleHeroUpdate = () => {
+            if (heroScrollTicking) return;
+            heroScrollTicking = true;
+            requestAnimationFrame(updateHeroScrollState);
+        };
+
+        lenis.on('scroll', scheduleHeroUpdate);
+        window.addEventListener('resize', () => {
+            resizeHeroCanvas();
+            lastRenderedFrame = -1;
+            scheduleHeroUpdate();
+        }, { passive: true });
     }
 
     // ==========================================
@@ -309,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const pCtx = particleCanvas.getContext('2d');
         particleCanvas.width = window.innerWidth;
         particleCanvas.height = window.innerHeight;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 700px)').matches;
 
         let particlesArray = [];
         let mouse = {
@@ -317,15 +361,17 @@ document.addEventListener("DOMContentLoaded", () => {
             radius: 120 // Connection/repulsion radius
         }
 
-        window.addEventListener('mousemove', function(event) {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
+        if (!isMobile) {
+            window.addEventListener('mousemove', function(event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
 
-        window.addEventListener('mouseout', function() {
-            mouse.x = undefined;
-            mouse.y = undefined;
-        });
+            window.addEventListener('mouseout', function() {
+                mouse.x = undefined;
+                mouse.y = undefined;
+            });
+        }
 
         window.addEventListener('resize', function() {
             particleCanvas.width = window.innerWidth;
@@ -412,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function initParticles() {
             particlesArray = [];
-            let numberOfParticles = window.innerWidth < 700 ? 16 : 35; // Keep mobile cleaner
+            let numberOfParticles = window.innerWidth < 700 ? 8 : 24;
             
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 1.5) + 0.5; // Back to tiny (0.5 to 2.0)
@@ -436,7 +482,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initParticles();
-        animateParticles();
+        if (!reduceMotion && !isMobile) {
+            animateParticles();
+        } else {
+            pCtx.clearRect(0, 0, innerWidth, innerHeight);
+            particlesArray.forEach((particle) => particle.draw());
+        }
     }
 
     // ==========================================
